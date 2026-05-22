@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  font-family:Inter,sans-serif;
+  background:#040714;
+}
+
+.glass-card{
+  backdrop-filter:blur(20px);
+  border:1px solid rgba(255,255,255,0.08);
+  box-shadow:0 20px 80px rgba(0,0,0,0.4);
+}
+
+::-webkit-scrollbar{
+  width:8px;
+}
+
+::-webkit-scrollbar-thumb{
+  background:#0ea5e9;
+  border-radius:999px;
+}
