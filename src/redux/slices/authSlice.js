@@ -1,7 +1,25 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const API_URL = "https://backend-auth-c86g.onrender.com";
+const API_URL = "https://backend-auth-gdiz.onrender.com/api";
+
+export const registerUser = createAsyncThunk(
+    "auth/registerUser",
+    async (userData, { rejectWithValue }) => {
+        try {
+            const res = await axios.post(
+                `${API_URL}/auth/register`,
+                userData
+            );
+
+            return res.data;
+        } catch (err) {
+            return rejectWithValue(
+                err.response?.data?.msg || "Registration failed"
+            );
+        }
+    }
+);
 
 export const loginUser = createAsyncThunk(
     "auth/loginUser",
@@ -131,6 +149,25 @@ const authSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
+            .addCase(registerUser.pending, (state) => {
+                state.isLoading = true;
+                state.error = null;
+            })
+            .addCase(registerUser.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isRegister = true;
+                state.user = action.payload;
+                state.error = null;
+
+                localStorage.setItem(
+                    "token",
+                    JSON.stringify(action.payload.token)
+                );
+            })
+            .addCase(registerUser.rejected, (state, action) => {
+                state.isLoading = false;
+                state.error = action.payload;
+            })
             .addCase(loginUser.pending, (state) => {
                 state.isLoading = true;
                 state.error = null;
